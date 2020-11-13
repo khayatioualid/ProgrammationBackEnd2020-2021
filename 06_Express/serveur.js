@@ -12,9 +12,21 @@ const mid2 = function (req, res, next) {
     next();
     console.log('mid2 traitement 2');
 };
+const Security = function (req, res, next) {
+    console.log('security verification');
+    if((req.body.login=="admin")&&(req.body.password=="adminpassword")){
+        console.log("accés autorisé")
+        next();
+    }else{
+        console.log("accés non autorisé")
+        res.send("you need a valid login and password.")
+    }
+    
+};
 
 const app = express()
 app.use(bodyparser.json())
+app.use(Security)
 app.use(mid1)
 app.use(mid2)
 
