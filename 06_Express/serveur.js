@@ -1,6 +1,8 @@
 const bodyparser = require('body-parser')
 const express = require('express')
 
+//const bodyparser = require('my-body-parser')
+//const express = require('my-express')
 
 const mid1 = function (req, res, next) {
     console.log('mid1 traitement 1');
@@ -14,7 +16,9 @@ const mid2 = function (req, res, next) {
 };
 const Security = function (req, res, next) {
     console.log('security verification');
-    if((req.body.login=="admin")&&(req.body.password=="adminpassword")){
+    if(((req.body.login=="admin")&&(req.body.password=="adminpassword"))||
+       (req.query.login=="admin")&&(req.query.password=="adminpassword")    )
+    {
         console.log("accés autorisé")
         next();
     }else{
@@ -36,7 +40,7 @@ app.get('/', (req, res) => {
   res.send('Hello World!')
 })
 
-app.get('/addition', (req, res) => {
+app.get('/addition', (req, res,next) => {
     let x=parseFloat(req.query.x)
     let y=parseFloat(req.query.y)
     /*
@@ -45,11 +49,27 @@ app.get('/addition', (req, res) => {
     res.write('y='+y+"\n")
     res.end('x+y='+(x+y))
     */
-    let msg='nous allons calculer une addition.<br>'
+    let msg='nous allons calculer une addition version1.<br>'
     msg+='x='+x+"<br>"
     msg+='y='+y+"<br>"
     msg+='x+y='+(x+y)
-    res.send(msg)
+    res.write(msg)
+    next()
+  })
+  app.get('/addition', (req, res) => {
+    let x=parseFloat(req.query.x)
+    let y=parseFloat(req.query.y)
+    /*
+    res.write('nous allons calculer une addition.\n')
+    res.write('x='+x+"\n")
+    res.write('y='+y+"\n")
+    res.end('x+y='+(x+y))
+    */
+    let msg='nous allons calculer une addition version2.<br>'
+    msg+='x='+x+"<br>"
+    msg+='y='+y+"<br>"
+    msg+='x+y='+(x+y)
+    res.end(msg)
   })
 
   app.post('/multiplication', (req, res) => {
