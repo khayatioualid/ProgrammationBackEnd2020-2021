@@ -28,10 +28,14 @@ router.use(function timeLog (req, res, next) {
 })
 // ajouter un user
 router.post('/', function (req, res) {
-  let newUser=new UsersModel({ name: 'string', login: 'string', password: 'string' })
+  let newUser=new UsersModel({ name: req.body.name, login:req.body.login, password: req.body.password })
   newUser.save(function (err) {
-    if (err) return handleError(err);
-    console.log("erreur d'ajout d'un user")
+    if (err) 
+    {
+      console.log("erreur d'ajout d'un user")
+      return handleError(err);
+    }
+    console.log("ajout d'un user")
     // saved!
   });
   res.send('User added')
