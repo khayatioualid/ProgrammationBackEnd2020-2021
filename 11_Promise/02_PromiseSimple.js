@@ -43,10 +43,14 @@ let s=0
 
 const calcul1=new Promise((resolve,reject)=>{
     request(`http://localhost:4000?x=${x}&y=${y}`, { json:true }, (err, res, body) => {
-        if (err) { reject("erreur réseau.") }
+        if (err) { 
+            reject("erreur réseau.") 
+            return
+        }
         resolve(res.body.result);
     });
 })
+
 calcul1.then((val)=>{
     console.log("resultat1="+val)
     s=val
@@ -67,6 +71,7 @@ calcul1.then((val)=>{
 }).catch((message)=>{
     console.log(message);
 })
+
 
 
 
